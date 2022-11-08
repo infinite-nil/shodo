@@ -1,5 +1,5 @@
 [package]
-name = "blog"
+name = "shodo"
 version = "0.1.0"
 edition = "2021"
 

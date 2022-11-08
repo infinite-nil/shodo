@@ -1,14 +1,21 @@
 use clap::Parser;
 
+use crate::post::generate_post;
+
+mod post;
+mod slugify;
+
 #[derive(Parser, Debug)]
 #[command(version)]
 struct Args {
     #[arg(short, long)]
-    gen: String,
+    gen: Option<String>,
 }
 
 fn main() {
-    let args = Args::parse();
+    let cli = Args::parse();
 
-    println!("Hello, {:?}", args);
+    if let Some(gen) = cli.gen.as_deref() {
+        generate_post(gen.to_string());
+    }
 }
