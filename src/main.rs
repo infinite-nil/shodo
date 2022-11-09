@@ -16,6 +16,11 @@ fn main() {
     let cli = Args::parse();
 
     if let Some(gen) = cli.gen.as_deref() {
-        generate_post(gen.to_string());
+        let post = generate_post(gen.to_string());
+
+        match post {
+            Ok(_) => println!("Content created"),
+            Err(e) => println!("Something went wrong: {:?}", e),
+        }
     }
 }
