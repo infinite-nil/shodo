@@ -8,6 +8,11 @@ pub fn generate_post(name: String) -> std::io::Result<()> {
     let file_name = path + &slug + ext;
     let mut file = File::create(file_name)?;
 
-    file.write_all(format!("<h1>{}</h1>", name).as_bytes())?;
+    let content = format!(
+        "---\nlayout: post\ntitle: {}\n---\n\n# Write your content herer",
+        name
+    );
+
+    file.write_all(content.as_bytes())?;
     Ok(())
 }
