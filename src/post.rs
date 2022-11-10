@@ -9,7 +9,7 @@ pub fn generate_post(name: String) -> std::io::Result<()> {
     let mut file = File::create(file_name)?;
 
     let content = format!(
-        "---\nlayout: post\ntitle: {}\n---\n\n# Write your content herer",
+        "---\nlayout: post\ntitle: {}\n---\n\n# Write your content here!",
         name
     );
 

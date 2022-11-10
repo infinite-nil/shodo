@@ -1,26 +1,34 @@
-use clap::Parser;
-
-use crate::post::generate_post;
-
 mod post;
 mod slugify;
 
-#[derive(Parser, Debug)]
-#[command(version)]
-struct Args {
-    #[arg(short, long)]
-    gen: Option<String>,
+use crate::post::generate_post;
+use std::env;
+
+fn handle_gerenator(file: Option<String>) {
+    match file {
+        Some(f) => {
+            let post = generate_post(f);
+
+            match post {
+                Ok(_) => println!("Content created"),
+                Err(e) => println!("Something went wrong: {:?}", e),
+            }
+        }
+        None => print!("Nope"),
+    }
 }
 
 fn main() {
-    let cli = Args::parse();
+    let args: Vec<String> = env::args().collect();
+    let command: Option<String> = args.get(1).cloned();
+    let arg: Option<String> = args.get(2).cloned();
 
-    if let Some(gen) = cli.gen.as_deref() {
-        let post = generate_post(gen.to_string());
-
-        match post {
-            Ok(_) => println!("Content created"),
-            Err(e) => println!("Something went wrong: {:?}", e),
-        }
+    match command {
+        Some(a) => match a.as_str() {
+            "-g" => handle_gerenator(arg),
+            "--generate" => handle_gerenator(arg),
+            _ => println!("Command not found"),
+        },
+        None => println!("Command not found"),
     }
 }
