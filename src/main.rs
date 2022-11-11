@@ -25,8 +25,7 @@ fn main() {
 
     match command {
         Some(a) => match a.as_str() {
-            "-g" => handle_gerenator(arg),
-            "--generate" => handle_gerenator(arg),
+            "-g" | "--generate" => handle_gerenator(arg),
             _ => println!("Command not found"),
         },
         None => println!("Command not found"),
