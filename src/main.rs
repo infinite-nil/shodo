@@ -2,6 +2,7 @@ mod post;
 mod slugify;
 mod utils;
 
+use comrak::{markdown_to_html, ComrakOptions};
 use post::generate_post;
 use std::{env, fs};
 use utils::get_file_content;
@@ -28,8 +29,9 @@ fn handle_build() {
             for path in content_path.unwrap() {
                 let file = path.unwrap().path().display().to_string();
                 let (_, content): (Vec<String>, Vec<String>) = get_file_content(file);
+                let html = markdown_to_html(content.concat().as_str(), &ComrakOptions::default());
 
-                println!("{:?}", content);
+                println!("{:?}", html);
             }
         }
         Err(_) => println!("Error"),
