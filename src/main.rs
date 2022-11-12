@@ -7,6 +7,8 @@ use post::generate_post;
 use std::{env, fs};
 use utils::get_file_content;
 
+use crate::post::build_post;
+
 fn handle_gerenator(file: Option<String>) {
     match file {
         Some(f) => {
@@ -33,7 +35,10 @@ fn handle_build() {
                 let (_, content): (Vec<String>, Vec<String>) = get_file_content(file);
                 let html = markdown_to_html(content.concat().as_str(), &ComrakOptions::default());
 
-                println!("Name: {} \nContent: {}", name, html);
+                match build_post(name, html) {
+                    Ok(_) => println!("Success"),
+                    Err(_) => println!("Nope"),
+                };
             }
         }
         Err(_) => println!("Error"),
