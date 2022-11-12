@@ -27,11 +27,13 @@ fn handle_build() {
     match content_path {
         Ok(_) => {
             for path in content_path.unwrap() {
-                let file = path.unwrap().path().display().to_string();
+                let tmp_file = path.unwrap();
+                let name = str::replace(tmp_file.file_name().to_str().unwrap(), ".md", ".html");
+                let file = tmp_file.path().display().to_string();
                 let (_, content): (Vec<String>, Vec<String>) = get_file_content(file);
                 let html = markdown_to_html(content.concat().as_str(), &ComrakOptions::default());
 
-                println!("{:?}", html);
+                println!("Name: {} \nContent: {}", name, html);
             }
         }
         Err(_) => println!("Error"),
