@@ -2,8 +2,8 @@ mod post;
 mod slugify;
 mod utils;
 
-use comrak::{markdown_to_html, ComrakOptions};
 use post::generate_post;
+use pulldown_cmark::{html, Options, Parser};
 use std::{env, fs};
 use utils::get_file_content;
 
@@ -33,10 +33,15 @@ fn handle_build() {
                 let name = str::replace(tmp_file.file_name().to_str().unwrap(), ".md", ".html");
                 let file = tmp_file.path().display().to_string();
                 let (_, content): (Vec<String>, Vec<String>) = get_file_content(file);
-                let html = markdown_to_html(content.concat().as_str(), &ComrakOptions::default());
 
-                match build_post(name, html) {
-                    Ok(_) => println!("Success"),
+                let text = content.join("\n");
+                let parser = Parser::new_ext(&text, Options::all());
+                let mut output = String::new();
+
+                html::push_html(&mut output, parser);
+
+                match build_post(name, output) {
+                    Ok(_) => print!("OK"),
                     Err(_) => println!("Nope"),
                 };
             }
